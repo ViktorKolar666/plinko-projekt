@@ -1,0 +1,22 @@
+body
+{
+    background-color: rgb(29, 31, 31);
+}
+
+h1
+{
+    color: rgb(216, 0, 0);
+    text-align: center;
+    font-family: copperplate, sans-serif;
+}
+
+p
+{
+    color: rgb(179, 179, 179);
+    text-align: center;
+}
+
+.padding
+{
+    padding: 15px 50px 70px;
+}
