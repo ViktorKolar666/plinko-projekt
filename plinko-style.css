@@ -1,20 +1,25 @@
-body
-{
+.bree-serif-regular {
+    font-family: "Bree Serif", serif !important;
+    font-weight: 400;
+    font-style: normal;
+}
+
+
+body {
     background-color: rgb(29, 31, 31);
+    font-family: "Pixelify Sans", Arial, sans-serif;
 }
 
 h1
 {
     color: rgb(216, 0, 0);
     text-align: center;
-    font-family: copperplate, sans-serif;
 }
 
 p
 {
     color: rgb(179, 179, 179);
     text-align: center;
-    font-family: copperplate, sans-serif;
 }
 
 .padding
@@ -24,10 +29,56 @@ p
 
 button
 {
-    background-color: rgb(216, 0, 0);
+  background-color: rgb(216, 0, 0);
     border-style: solid;
     border-color: rgb(216, 0, 0);
     padding: 5px;
+    border-radius: 2px;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+}
+
+nav
+{
+    
+}
+
+nav ul
+{
+
+}
+
+nav a
+{
+
+}
+
+.game-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 80vh;
+}
+
+#plinko-canvas {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 600px;
+    height: 700px;
+    margin-bottom: 20px;
+}
+
+.button, #drop {
+    margin-top: 10px;
+    margin-bottom: 30px;
+    background-color: rgb(216, 0, 0);
+    border-style: solid;
+    border-color: rgb(216, 0, 0);
+    padding: 10px 30px;
     border-radius: 8px;
-    font-family: copperplate, sans-serif;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
 }

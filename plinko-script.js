@@ -6,7 +6,7 @@ const engine = Engine.create();
 const { world } = engine;
 
 const render = Render.create({
-    element: document.body,
+    element: document.getElementById("plinko-canvas"), // změna zde
     engine: engine,
     options: {
         width,
