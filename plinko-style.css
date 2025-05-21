@@ -4,32 +4,36 @@
     font-style: normal;
 }
 
-
 body {
     background-color: rgb(29, 31, 31);
     font-family: "Pixelify Sans", Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0;
+    height: 100vh;
 }
 
-h1
-{
+h1 {
     color: rgb(216, 0, 0);
+    font-size: 2em;
+    margin: 20px 0;
     text-align: center;
+    font-family: "Pixelify Sans", Arial, sans-serif;
 }
 
-p
-{
+p {
     color: rgb(179, 179, 179);
+    font-family: "Pixelify Sans", Arial, sans-serif;
     text-align: center;
 }
 
-.padding
-{
+.padding {
     padding: 15px 50px 70px;
 }
 
-button
-{
-  background-color: rgb(216, 0, 0);
+button {
+    background-color: rgb(216, 0, 0);
     border-style: solid;
     border-color: rgb(216, 0, 0);
     padding: 5px;
@@ -37,36 +41,22 @@ button
     font-family: "Pixelify Sans", Arial, sans-serif;
 }
 
-nav
-{
-    
-}
-
-nav ul
-{
-
-}
-
-nav a
-{
-
-}
-
 .game-container {
     display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    min-height: 80vh;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    padding: 20px;
+    background-color: rgb(40, 40, 40);
+    border-radius: 10px;
+    margin-top: 20px;
 }
 
 #plinko-canvas {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 600px;
     height: 700px;
-    margin-bottom: 20px;
+    background-color: #1D1F1F;
+    border-radius: 10px;
 }
 
 .button, #drop {
@@ -81,4 +71,116 @@ nav a
     color: white;
     font-size: 1.2em;
     cursor: pointer;
+}
+
+nav {
+    background-color: rgb(29, 31, 31);
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: fixed;
+    gap: 30px;
+}
+
+header {
+    margin-top: 60px; /* Posuneme obsah pod navbar */
+    text-align: center;
+    color: white;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+li {
+    display: inline;
+}
+
+li a {
+    text-decoration: none;
+    color: rgb(216, 0, 0);
+    padding: 10px 20px;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+li a:hover {
+    background-color: rgb(216, 0, 0);
+    color: rgb(14, 13, 13);
+    border-radius: 5px;
+}
+
+.active {
+    background-color: rgb(216, 0, 0);
+    color: rgb(14, 13, 13);
+    border-radius: 5px;
+}
+
+.currency-display {
+    color: white;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    font-size: 1em;
+}
+
+.left-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background-color: rgb(40, 40, 40);
+    padding: 20px;
+    border-radius: 10px;
+    color: white;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    width: 200px;
+}
+
+.left-panel label {
+    font-size: 1em;
+}
+
+.left-panel input {
+    padding: 5px;
+    font-size: 1em;
+    border: 1px solid rgb(216, 0, 0);
+    border-radius: 5px;
+    background-color: rgb(29, 31, 31);
+    color: white;
+}
+
+.left-panel input::placeholder {
+    color: rgb(179, 179, 179);
+}
+
+.left-panel button {
+    margin-top: 10px;
+    background-color: rgb(216, 0, 0);
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    color: white;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+.left-panel button:hover {
+    background-color: rgb(255, 0, 0);
+}
+
+.error-message {
+    color: rgb(255, 0, 0);
+    font-size: 0.9em;
+    margin: 0;
+    padding: 0;
+    display: none; /* Skryjeme zprávu ve výchozím stavu */
+}
+
+.left-panel input.error {
+    border-color: rgb(255, 0, 0); /* Zvýrazníme červeně při chybě */
 }
