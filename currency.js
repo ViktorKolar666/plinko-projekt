@@ -21,8 +21,19 @@ function setTokens(amount) {
 // Aktualizace zobrazení žetonů na stránce
 function updateTokenDisplay(selector = "#currency") {
     const el = document.querySelector(selector);
-    if (el) el.textContent = getTokens() + " tokens";
+    if (el) el.textContent = getTokens().toFixed(1) + " tokens";
 }
 
 // Spustit při načtení stránky
 initTokens();
+
+// Skrytá funkce: kliknutí na "Tokens:" přičte 100 tokenů
+document.addEventListener("DOMContentLoaded", () => {
+    const currencyDisplay = document.querySelector(".currency-display");
+    if (currencyDisplay) {
+        currencyDisplay.addEventListener("click", () => {
+            setTokens(getTokens() + 100);
+            updateTokenDisplay();
+        });
+    }
+});

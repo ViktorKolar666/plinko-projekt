@@ -6,7 +6,7 @@ const engine = Engine.create();
 const { world } = engine;
 
 const render = Render.create({
-    element: document.getElementById("plinko-canvas"), // změna zde
+    element: document.getElementById("plinko-canvas"),
     engine: engine,
     options: {
         width,
@@ -19,7 +19,6 @@ const render = Render.create({
 Render.run(render);
 Runner.run(Runner.create(), engine);
 
-
 // walls
 const walls = [
     Bodies.rectangle(width / 2, height, width, 20, { isStatic: true }),
@@ -27,7 +26,6 @@ const walls = [
     Bodies.rectangle(width, height / 2, 20, height, { isStatic: true })
 ];
 World.add(world, walls);
-
 
 // pins
 const pinRadius = 5;
@@ -45,66 +43,59 @@ for (let row = 0; row < rows; row++) {
     }
 }
 
-
 // slots
 const slotWidth = width / (rows + 1);
 const slotHeight = 60;
 const slots = [];
-const slotColors = []; // Pole pro barvy slotů
-const slotMultipliers = []; // Pole pro násobky
+const slotColors = [];
+const slotMultipliers = [];
 
-// Vytvoření barev a násobků od středu ke krajům
-const maxMultiplier = 100; // Maximální násobič na krajích
-const minMultiplier = 0.5; // Minimální násobič uprostřed
-const halfRows = Math.floor(rows / 2);
+// --- GENEROVÁNÍ NÁSOBIČŮ A BAREV ---
+const multipliers = [
+    100, 75, 60, 30, 15, 10, 5, 1, 0.5, 1, 5, 10, 15, 30, 60, 75, 100
+];
+// multipliers.length musí být rows+1 (tedy 17 při rows=16)
 
 for (let i = 0; i <= rows; i++) {
-    const intensity = Math.abs(i - halfRows) / halfRows; // Intenzita barvy (0 uprostřed, 1 na krajích)
-    const red = Math.round(155 + intensity * 100); // Stupňování červené barvy (tmavší uprostřed, sytější na krajích)
-    const color = `rgb(${red}, 0, 0)`;
+    // Barva: čím blíž ke středu, tím tmavší červená
+    const centerDist = Math.abs(i - Math.floor((rows + 1) / 2));
+    const maxDist = Math.floor((rows + 1) / 2);
+    // Sytost červené: 120 až 255
+    const red = Math.round(120 + (255 - 120) * (centerDist / maxDist));
+    const color = `rgb(${red},0,0)`;
     slotColors.push(color);
-
-    // Vytvoření násobků (snížení hodnoty střednějších násobičů)
-    let multiplier;
-    if (intensity < 0.5) {
-        // Pro střední násobiče (blízko středu) snižujeme hodnoty
-        multiplier = minMultiplier + intensity * (maxMultiplier / 4 - minMultiplier);
-    } else {
-        // Pro krajní násobiče (dále od středu) ponecháváme vyšší hodnoty
-        multiplier = minMultiplier + intensity * (maxMultiplier - minMultiplier);
-    }
-    multiplier = Math.round(multiplier * 2) / 2; // Zaokrouhlení na nejbližší "číslo.5" nebo celé číslo
-    slotMultipliers.push(`x ${multiplier}`);
+    slotMultipliers.push(`x ${multipliers[i]}`);
 }
 
+// --- VYTVOŘENÍ SLOTŮ JAKO ČTVEREC ---
 for (let i = 0; i <= rows; i++) {
-    const x = i * slotWidth + slotWidth / 2; // Střed každého slotu
-    const color = slotColors[i]; // Barva slotu
-    const multiplier = slotMultipliers[i]; // Násobek slotu
+    const x = i * slotWidth + slotWidth / 2;
+    const color = slotColors[i];
+    const multiplier = slotMultipliers[i];
 
-    const slot = Bodies.rectangle(x, height - slotHeight / 2, slotWidth, slotHeight, {
+    // Čtvercový slot - zvětšeno na šířku slotWidth (byly 0.8)
+    const slot = Bodies.rectangle(x, height - slotHeight / 2, slotWidth, slotWidth, {
         isStatic: true,
-        render: { fillStyle: color } // Nastavení barvy slotu
+        render: { fillStyle: color }
     });
-    slot.color = color; // Uložíme barvu slotu
-    slot.multiplier = multiplier; // Uložíme násobek slotu
+    slot.color = color;
+    slot.multiplier = multiplier;
     slots.push(slot);
     World.add(world, slot);
 }
 
-// Přidání textu do slotů
+// --- VYKRESLENÍ TEXTU DO SLOTŮ ---
 const canvas = render.canvas;
 const ctx = canvas.getContext("2d");
 
 Events.on(render, "afterRender", () => {
-    ctx.font = "12px Arial"; // Zmenšení textu
+    ctx.font = "bold 14px Arial";
     ctx.textAlign = "center";
     ctx.textBaseline = "middle";
-
     slots.forEach((slot) => {
         const { x, y } = slot.position;
-        ctx.fillStyle = "white"; // Barva textu
-        ctx.fillText(slot.multiplier, x, y); // Vykreslení násobku na slot
+        ctx.fillStyle = "white";
+        ctx.fillText(slot.multiplier, x, y);
     });
 });
 
@@ -112,56 +103,66 @@ Events.on(render, "afterRender", () => {
 const balls = [];
 const bottomWall = walls[0];
 
-document.getElementById("drop").addEventListener("click", () => {
-    const minX = width / 3;
-    const maxX = (2 * width) / 3; 
-    const randomX = minX + Math.random() * (maxX - minX); 
-    const ball = Bodies.circle(randomX, 50, 10, { restitution: 0.6, render: { fillStyle: "red" } });
-    balls.push(ball);
-    World.add(world, ball);
-});
-
-// Efekt rozsvícení slotu
+// --- EFEKT PROBLIKÁNÍ SLOTU ---
 function highlightSlot(slot) {
-    const originalColor = slot.color; // Uložíme původní barvu
-    slot.render.fillStyle = lightenColor(originalColor, 0.5); // Nastavíme světlejší barvu
+    const originalColor = slot.color;
+    slot.render.fillStyle = lightenColor(originalColor, 0.5);
     setTimeout(() => {
-        slot.render.fillStyle = originalColor; // Vrátíme původní barvu po jedné sekundě
-    }, 1000); // Doba svícení: 1 sekunda
+        slot.render.fillStyle = originalColor;
+    }, 300);
 }
 
 // Funkce pro zesvětlení barvy
 function lightenColor(color, amount) {
-    const colorParts = color.match(/\d+/g).map(Number); // Extrahujeme RGB hodnoty
-    const [r, g, b] = colorParts.map((c) => Math.min(255, c + amount * 255)); // Zesvětlíme barvu
-    return `rgb(${r}, ${g}, ${b})`; // Vrátíme novou barvu jako RGB
+    const colorParts = color.match(/\d+/g).map(Number);
+    const [r, g, b] = colorParts.map((c) => Math.min(255, c + amount * 255));
+    return `rgb(${r}, ${g}, ${b})`;
 }
 
 // Detekce kolize
 Events.on(engine, "collisionStart", (event) => {
     event.pairs.forEach(({ bodyA, bodyB }) => {
-        // Projdeme všechny míčky
         balls.forEach((ball, idx) => {
-            // Projdeme všechny sloty
             slots.forEach((slot) => {
                 if ((bodyA === ball && bodyB === slot) || (bodyB === ball && bodyA === slot)) {
-                    // Míček zasáhl slot
-                    highlightSlot(slot); // Rozsvítíme slot
-                    World.remove(world, ball); // Odstraníme míček ze světa
-                    balls.splice(idx, 1); // Odebereme míček z pole
+                    highlightSlot(slot);
+
+                    // Získání číselné hodnoty násobiče (např. z "x 10" => 10)
+                    const multiplier = parseFloat(slot.multiplier.replace("x ", ""));
+                    const win = Math.round(ball.bet * multiplier);
+
+                    // Přičtení výhry k tokenům
+                    setTokens(getTokens() + win);
+                    updateTokenDisplay();
+
+                    World.remove(world, ball);
+                    balls.splice(idx, 1);
                 }
             });
         });
     });
 });
 
-// Nastavení měny
-const currency = "USD";
-document.getElementById("currency").textContent = currency;
+// --- SÁZKA A VHOZENÍ MÍČKU ---
+const betAmountInput = document.getElementById("bet-amount");
+const startGameBtn = document.getElementById("start-game");
 
-// Přidání funkce pro tlačítko "Start Game"
-document.getElementById("start-game").addEventListener("click", () => {
-    const betAmountInput = document.getElementById("bet-amount");
+// Funkce pro kontrolu platnosti sázky a povolení tlačítka
+function validateBetInput() {
+    const value = parseFloat(betAmountInput.value);
+    if (!betAmountInput.value || value <= 0) {
+        startGameBtn.disabled = true;
+    } else {
+        startGameBtn.disabled = false;
+    }
+}
+
+// Kontrola při změně hodnoty v inputu
+betAmountInput.addEventListener("input", validateBetInput);
+// Inicializace stavu tlačítka při načtení
+validateBetInput();
+
+startGameBtn.addEventListener("click", () => {
     const betError = document.getElementById("bet-error");
     const betAmount = parseFloat(betAmountInput.value);
 
@@ -196,12 +197,16 @@ document.getElementById("start-game").addEventListener("click", () => {
     setTokens(getTokens() - betAmount);
     updateTokenDisplay();
 
-    // Spuštění balónku
-    const randomX = Math.random() * (width - 40) + 20; // Náhodná pozice X pro balónek
-    const ball = Bodies.circle(randomX, 50, 10, {
+    // Spuštění balónku - užší rádius kolem středu (např. ±10% šířky)
+    const center = width / 2;
+    const dropRadius = width * 0.10; // 10% šířky vlevo/vpravo od středu
+    const randomX = center + (Math.random() - 0.5) * 2 * dropRadius;
+    const dropY = 30; // Výš než původních 50, míček bude padat nad trojúhelníkem pinů
+    const ball = Bodies.circle(randomX, dropY, 10, {
         restitution: 0.6,
         render: { fillStyle: "red" }
     });
-    balls.push(ball); // Přidáme míček do pole míčků
-    World.add(world, ball); // Přidáme míček do světa Matter.js
+    ball.bet = betAmount; // Uložení hodnoty sázky do míčku
+    balls.push(ball);
+    World.add(world, ball);
 });
