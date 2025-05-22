@@ -35,10 +35,9 @@ nav {
 }
 
 .currency-display {
-    color: rgb(216, 0, 0); /* stejná barva jako odkazy */
+    color: white;
     font-family: "Pixelify Sans", Arial, sans-serif;
     font-size: 1em;
-    font-weight: bold;
 }
 
 ul {

@@ -11,7 +11,6 @@ body {
     flex-direction: column;
     align-items: center;
     margin: 0;
-    height: 100vh;
 }
 
 h1 {
@@ -85,7 +84,7 @@ nav {
 }
 
 header {
-    margin-top: 60px; /* Posuneme obsah pod navbar */
+    margin-top: 60px;
     text-align: center;
     color: white;
     font-family: "Pixelify Sans", Arial, sans-serif;
