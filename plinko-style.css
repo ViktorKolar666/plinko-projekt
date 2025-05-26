@@ -183,3 +183,63 @@ li a:hover {
 .left-panel input.error {
     border-color: rgb(255, 0, 0); /* Zvýrazníme červeně při chybě */
 }
+
+.left-panel input,
+.left-panel .bet-presets,
+.left-panel button.button {
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.bet-presets {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 0 0;
+}
+
+.preset-btn {
+    flex: 1 1 0;
+    min-width: 0;
+    background: rgb(216, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 0;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    font-size: 0.95em;           /* menší písmo */
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;         /* nezalamovat text */
+    overflow: hidden;            /* skryje přetékající text */
+    text-overflow: ellipsis;     /* ... pokud by text přetékal */
+    display: flex;               /* zarovnání na střed */
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.win-history {
+    margin-top: 18px;
+    background: rgb(34, 34, 34);
+    border-radius: 8px;
+    padding: 10px 8px;
+    min-height: 60px;
+    max-height: 260px;
+    overflow-y: auto;
+    font-size: 0.95em;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+.win-entry {
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    padding: 2px 0;
+    border-radius: 4px;
+    text-align: left;
+    font-weight: bold;
+}
+.win-x100 { color: #ffd700; }    /* zlatá */
+.win-x75, .win-x60 { color: #ff9800; }   /* oranžová */
+.win-x30, .win-x15, .win-x10 { color: #ff5722; } /* tmavě oranžová */
+.win-x5, .win-x1 { color: #4caf50; }     /* zelená */
+.win-x05 { color: #03a9f4; }    /* modrá */

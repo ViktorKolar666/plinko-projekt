@@ -94,6 +94,7 @@ Events.on(engine, "collisionStart", event => {
                     const win = Math.round(ball.bet * multiplier);
                     setTokens(getTokens() + win);
                     updateTokenDisplay();
+                    addWinToHistory(multiplier, win);
                     World.remove(world, ball);
                     balls.splice(idx, 1);
                 }
@@ -101,6 +102,32 @@ Events.on(engine, "collisionStart", event => {
         });
     });
 });
+
+// Výpis posledních 15 výher
+const winHistory = [];
+function addWinToHistory(multiplier, winAmount) {
+    // Určení třídy podle násobiče
+    let cls = "";
+    if (multiplier >= 100) cls = "win-x100";
+    else if (multiplier >= 75) cls = "win-x75";
+    else if (multiplier >= 60) cls = "win-x60";
+    else if (multiplier >= 30) cls = "win-x30";
+    else if (multiplier >= 15) cls = "win-x15";
+    else if (multiplier >= 10) cls = "win-x10";
+    else if (multiplier >= 5) cls = "win-x5";
+    else if (multiplier >= 1) cls = "win-x1";
+    else cls = "win-x05";
+
+    winHistory.unshift({ multiplier, winAmount, cls });
+    if (winHistory.length > 15) winHistory.pop();
+
+    const container = document.getElementById("win-history");
+    if (container) {
+        container.innerHTML = winHistory.map(
+            w => `<div class="win-entry ${w.cls}">x${w.multiplier} &rarr; +${w.winAmount} tokens</div>`
+        ).join("");
+    }
+}
 
 // Bet & drop logic
 const betAmountInput = document.getElementById("bet-amount");

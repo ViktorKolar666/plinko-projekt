@@ -123,3 +123,25 @@ li a:hover {
     transform: scale(1.1);
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
 }
+
+.reset-tokens-btn {
+    position: fixed;
+    right: 30px;
+    bottom: 30px;
+    background: rgb(216, 0, 0);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-family: "Pixelify Sans", Arial, sans-serif;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    z-index: 2000;
+    transition: background 0.2s;
+}
+
+.reset-tokens-btn:hover {
+    background: rgb(255, 0, 0);
+}

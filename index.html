@@ -37,5 +37,12 @@
         <script>
             updateTokenDisplay();
         </script>
+        <button id="reset-tokens-btn" class="reset-tokens-btn">Reset tokens</button>
+        <script>
+            document.getElementById("reset-tokens-btn").addEventListener("click", () => {
+                setTokens(100);
+                updateTokenDisplay();
+            });
+        </script>
     </body>
 </html>
