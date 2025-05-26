@@ -1,5 +1,5 @@
 // Matter.js initialization
-const { Engine, Render, Runner, World, Bodies, Events, Body } = Matter;
+const { Engine, Render, Runner, World, Bodies, Events } = Matter;
 
 const width = 600, height = 700;
 const engine = Engine.create();
@@ -177,3 +177,35 @@ startGameBtn.addEventListener("click", () => {
     balls.push(ball);
     World.add(world, ball);
 });
+
+// Responzivní zobrazení hrací plochy
+function resizePlinkoCanvas() {
+    const container = document.getElementById("plinko-canvas");
+    if (!container) return;
+    const canvas = render.canvas;
+    const baseWidth = 600, baseHeight = 700;
+
+    // Zjisti dostupnou šířku viewportu (nebo rodiče) a výšku okna
+    const availWidth = Math.min(window.innerWidth, container.parentElement.offsetWidth || window.innerWidth);
+    const availHeight = window.innerHeight - container.getBoundingClientRect().top - 30;
+
+    // Spočítej škálovací faktor tak, aby se plocha vešla na šířku i výšku, ale nikdy nebyla větší než originál
+    const scale = Math.min(availWidth / baseWidth, availHeight / baseHeight, 1);
+
+    // Nastav škálování canvasu
+    canvas.style.transform = `scale(${scale})`;
+    canvas.style.transformOrigin = "top center";
+    canvas.style.width = baseWidth + "px";
+    canvas.style.height = baseHeight + "px";
+
+    // Kontejner má vždy velikost nativního canvasu (kvůli centrování flexem)
+    container.style.width = baseWidth + "px";
+    container.style.height = baseHeight + "px";
+    container.style.display = "flex";
+    container.style.justifyContent = "center";
+    container.style.alignItems = "flex-start";
+    container.style.margin = "0 auto";
+    container.style.overflow = "visible";
+}
+window.addEventListener("resize", resizePlinkoCanvas);
+resizePlinkoCanvas();
